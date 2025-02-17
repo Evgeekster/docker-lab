@@ -1,11 +1,12 @@
 from openai import OpenAI
-from settings import OPEN_AI_KEY
+from settings import OPEN_API
 from redis_util import get_context, update_context
 import html
 import logging
+
 client = OpenAI(
   base_url="https://openrouter.ai/api/v1",
-  api_key=OPEN_AI_KEY,
+  api_key=OPEN_API,
 )
 
 
@@ -40,9 +41,7 @@ async def ai_request(user_input: str, user_id: int | str) -> str:
         await update_context(user_id=user_id, user_content=user_input, ai_content=ai_response)
         return ai_response
     
-
     except Exception as e:
         logging.error(f'an error with AI response: {e}')
-
         return None 
 

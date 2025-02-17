@@ -1,10 +1,6 @@
-from settings import redis, redis_cfg
 import redis.asyncio as red
 
-
 # Async redis acces 
-
-
 
 async def get_redis():
     return await red.from_url("redis://localhost:6379", decode_responses=True)
@@ -12,14 +8,9 @@ async def get_redis():
 
 async def update_context(user_id: str | int, user_content: str, ai_content: str):
     redis = await get_redis()
-
     history_key = f'user:{user_id}:context'
     await redis.rpush(history_key, user_content, ai_content) 
     await redis.ltrim(history_key, -20, -1) #limit 20 last msg
-
-
-
-
 
 
 async def get_context(user_id: str | int):
